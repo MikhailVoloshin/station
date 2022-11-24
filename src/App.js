@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import Located from './components/Located';
+import Map from './components/Map/Map';
+import CurrentTime from './components/CurrentTime';
+import { useGetPositionQuery } from './store/rtkq'
+import List from './components/List';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+ 	const { data: location } = useGetPositionQuery('', { pollingInterval: 5000 })
+
+	return (
+		<div className='station'>
+			<header className='header'>
+				<Located location={location?.iss_position} />
+				<CurrentTime />
+			</header>
+			<main className='main'>
+				<div className='main__map'>
+					<Map position={location?.iss_position} />
+				</div>
+        		<List />
+			</main>
+		</div>
+	);
 }
 
 export default App;
